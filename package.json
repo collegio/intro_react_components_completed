@@ -1,0 +1,13 @@
+{
+  "name": "lesson_1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/collegio/intro_react_jsx.git",
+  "author": "robmyers82 <robert_myers_@hotmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1"
+  }
+}
