@@ -8,42 +8,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var FreeAgentTracker = function (_React$Component) {
-    _inherits(FreeAgentTracker, _React$Component);
+var ActivityTracker = function (_React$Component) {
+    _inherits(ActivityTracker, _React$Component);
 
-    function FreeAgentTracker(props) {
-        _classCallCheck(this, FreeAgentTracker);
+    function ActivityTracker(props) {
+        _classCallCheck(this, ActivityTracker);
 
         // bind the required methods to this
-        var _this = _possibleConstructorReturn(this, (FreeAgentTracker.__proto__ || Object.getPrototypeOf(FreeAgentTracker)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ActivityTracker.__proto__ || Object.getPrototypeOf(ActivityTracker)).call(this, props));
 
-        _this.handleAddPlayer = _this.handleAddPlayer.bind(_this);
-        _this.handleDeletePlayers = _this.handleDeletePlayers.bind(_this);
-        _this.handleDeletePlayer = _this.handleDeletePlayer.bind(_this);
+        _this.handleAddActivity = _this.handleAddActivity.bind(_this);
+        _this.handleDeleteActivities = _this.handleDeleteActivities.bind(_this);
+        _this.handleDeleteActivity = _this.handleDeleteActivity.bind(_this);
 
-        // Set the initial state of the players here. Even though we're not directly
+        // Set the initial state of the activities here. Even though we're not directly
         // rendering it inside of this component, we will be performing almost all of
         // the functionality of it at this level.
         _this.state = {
-            players: []
+            activities: []
         };
         return _this;
     }
 
-    // componentDidMount: we're going to use this to retrieve our players from local storage
+    // componentDidMount: we're going to use this to retrieve our activities from local storage
 
 
-    _createClass(FreeAgentTracker, [{
+    _createClass(ActivityTracker, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
 
             try {
-                var playerJSON = localStorage.getItem('players');
-                var players = JSON.parse(playerJSON);
+                var activityJSON = localStorage.getItem('activities');
+                var activities = JSON.parse(activityJSON);
 
-                if (players) {
+                if (activities) {
                     this.setState(function () {
-                        return { players: players };
+                        return { activities: activities };
                     });
                 }
             } catch (e) {
@@ -51,59 +51,59 @@ var FreeAgentTracker = function (_React$Component) {
             }
         }
 
-        // componentDidUpdate: we're going to use this to save our updated player state in local storage
+        // componentDidUpdate: we're going to use this to save our updated activity state in local storage
 
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps, prevState) {
 
-            if (prevState.players.length !== this.state.players.length) {
+            if (prevState.activities.length !== this.state.activities.length) {
 
-                var playerJSON = JSON.stringify(this.state.players);
-                localStorage.setItem('players', playerJSON);
+                var activityJSON = JSON.stringify(this.state.activities);
+                localStorage.setItem('activities', activityJSON);
             }
         }
 
-        // handleAddPlayer: Used to add a new player to the list of free agents
+        // handleAddActivity: Used to add a new activity to the list of free agents
 
     }, {
-        key: 'handleAddPlayer',
-        value: function handleAddPlayer(player) {
+        key: 'handleAddActivity',
+        value: function handleAddActivity(activity) {
 
-            if (!player.name) {
-                return 'Please enter a valid player name.';
+            if (!activity.name) {
+                return 'Please enter a valid activity name.';
             }
 
             // update the state
             this.setState(function (prevState) {
                 return {
-                    players: prevState.players.concat(player)
+                    activities: prevState.activities.concat(activity)
                 };
             });
         }
 
-        // handleDeletePlayers: Used to clear all players from the list
+        // handleDeleteActivities: Used to clear all activities from the list
 
     }, {
-        key: 'handleDeletePlayers',
-        value: function handleDeletePlayers() {
+        key: 'handleDeleteActivities',
+        value: function handleDeleteActivities() {
 
             // update the state
             this.setState(function (prevState) {
                 return {
-                    players: []
+                    activities: []
                 };
             });
         }
 
-        // handleDeletePlayer: Used to remove a specific player from the list
+        // handleDeleteActivity: Used to remove a specific activity from the list
 
     }, {
-        key: 'handleDeletePlayer',
-        value: function handleDeletePlayer(player) {
+        key: 'handleDeleteActivity',
+        value: function handleDeleteActivity(activity) {
 
-            var newPlayerList = this.state.players.filter(function (thePlayer) {
-                if (thePlayer.name == player.name) {
+            var newActivityList = this.state.activities.filter(function (theActivity) {
+                if (theActivity.name == activity.name) {
                     return false;
                 } else {
                     return true;
@@ -113,7 +113,7 @@ var FreeAgentTracker = function (_React$Component) {
             // update the state
             this.setState(function (prevState) {
                 return {
-                    players: newPlayerList
+                    activities: newActivityList
                 };
             });
         }
@@ -126,19 +126,19 @@ var FreeAgentTracker = function (_React$Component) {
                 React.createElement(
                     Header,
                     null,
-                    'Free Agent Tracker'
+                    'Activity Tracker'
                 ),
                 React.createElement(Body, {
-                    handleAddPlayer: this.handleAddPlayer,
-                    handleDeletePlayers: this.handleDeletePlayers,
-                    handleDeletePlayer: this.handleDeletePlayer,
-                    players: this.state.players
+                    handleAddActivity: this.handleAddActivity,
+                    handleDeleteActivities: this.handleDeleteActivities,
+                    handleDeleteActivity: this.handleDeleteActivity,
+                    activities: this.state.activities
                 })
             );
         }
     }]);
 
-    return FreeAgentTracker;
+    return ActivityTracker;
 }(React.Component);
 
 var Header = function Header(props) {
@@ -165,63 +165,63 @@ var Body = function Body(props) {
     return React.createElement(
         'div',
         null,
-        React.createElement(PlayersList, {
-            players: props.players,
-            handleDeletePlayers: props.handleDeletePlayers,
-            handleDeletePlayer: props.handleDeletePlayer
+        React.createElement(ActivitiesList, {
+            activities: props.activities,
+            handleDeleteActivities: props.handleDeleteActivities,
+            handleDeleteActivity: props.handleDeleteActivity
         }),
-        React.createElement(NewFreeAgentForm, { handleAddPlayer: props.handleAddPlayer })
+        React.createElement(NewActivityForm, { handleAddActivity: props.handleAddActivity })
     );
 };
 
-var PlayersList = function PlayersList(props) {
+var ActivitiesList = function ActivitiesList(props) {
     return React.createElement(
         'div',
         null,
-        props.players.length <= 0 && React.createElement(
+        props.activities.length <= 0 && React.createElement(
             'p',
             null,
-            'No free agents, everybody is playing!'
+            'No activities entered'
         ),
-        props.players.length > 0 && React.createElement(
+        props.activities.length > 0 && React.createElement(
             'button',
-            { onClick: props.handleDeletePlayers },
-            'Remove All Players'
+            { onClick: props.handleDeleteActivities },
+            'Remove All Activities'
         ),
         React.createElement(
             'ul',
             null,
-            props.players.map(function (player) {
-                return React.createElement(Player, { key: player.name, player: player, handleDeletePlayer: props.handleDeletePlayer });
+            props.activities.map(function (activity) {
+                return React.createElement(Activity, { key: activity.name, activity: activity, handleDeleteActivity: props.handleDeleteActivity });
             })
         )
     );
 };
 
-var Player = function (_React$Component2) {
-    _inherits(Player, _React$Component2);
+var Activity = function (_React$Component2) {
+    _inherits(Activity, _React$Component2);
 
-    function Player(props) {
-        _classCallCheck(this, Player);
+    function Activity(props) {
+        _classCallCheck(this, Activity);
 
-        var _this2 = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (Activity.__proto__ || Object.getPrototypeOf(Activity)).call(this, props));
 
         // bind the required methods to this
 
 
-        _this2.deletePlayer = _this2.deletePlayer.bind(_this2);
+        _this2.deleteActivity = _this2.deleteActivity.bind(_this2);
         return _this2;
     }
 
-    // deletePlayer: used to pass up the player to delete into the handleDeletePlayer() method
+    // deleteActivity: used to pass up the activity to delete into the handleDeleteActivity() method
 
 
-    _createClass(Player, [{
-        key: 'deletePlayer',
-        value: function deletePlayer() {
+    _createClass(Activity, [{
+        key: 'deleteActivity',
+        value: function deleteActivity() {
 
-            // delete the player via the handler method
-            this.props.handleDeletePlayer(this.props.player);
+            // delete the activity via the handler method
+            this.props.handleDeleteActivity(this.props.activity);
         }
     }, {
         key: 'render',
@@ -229,11 +229,9 @@ var Player = function (_React$Component2) {
             return React.createElement(
                 'li',
                 null,
-                this.props.player.name,
-                ' (',
-                this.props.player.gender,
-                ')',
-                React.createElement('br', null),
+                this.props.activity.name,
+                ' - ',
+                this.props.activity.activity,
                 React.createElement('br', null),
                 React.createElement(
                     'p',
@@ -241,30 +239,30 @@ var Player = function (_React$Component2) {
                     React.createElement(
                         'strong',
                         null,
-                        'About Me:'
+                        'Distance:'
                     ),
-                    React.createElement('br', null),
-                    this.props.player.message
+                    ' ',
+                    this.props.activity.distance
                 ),
                 React.createElement(
                     'button',
-                    { onClick: this.deletePlayer },
+                    { onClick: this.deleteActivity },
                     'Remove'
                 )
             );
         }
     }]);
 
-    return Player;
+    return Activity;
 }(React.Component);
 
-var NewFreeAgentForm = function (_React$Component3) {
-    _inherits(NewFreeAgentForm, _React$Component3);
+var NewActivityForm = function (_React$Component3) {
+    _inherits(NewActivityForm, _React$Component3);
 
-    function NewFreeAgentForm(props) {
-        _classCallCheck(this, NewFreeAgentForm);
+    function NewActivityForm(props) {
+        _classCallCheck(this, NewActivityForm);
 
-        var _this3 = _possibleConstructorReturn(this, (NewFreeAgentForm.__proto__ || Object.getPrototypeOf(NewFreeAgentForm)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (NewActivityForm.__proto__ || Object.getPrototypeOf(NewActivityForm)).call(this, props));
 
         _this3.formDidSubmit = _this3.formDidSubmit.bind(_this3);
 
@@ -279,17 +277,17 @@ var NewFreeAgentForm = function (_React$Component3) {
     // so that we can attach the form data
 
 
-    _createClass(NewFreeAgentForm, [{
+    _createClass(NewActivityForm, [{
         key: 'formDidSubmit',
         value: function formDidSubmit(e) {
             e.preventDefault();
 
-            var player = {
+            var activity = {
                 name: e.target.elements.yourName.value.trim(),
-                gender: e.target.elements.yourGender.value.trim(),
-                message: e.target.elements.yourMessage.value.trim()
+                activity: e.target.elements.yourActivity.value.trim(),
+                distance: e.target.elements.yourDistance.value.trim()
             };
-            var error = this.props.handleAddPlayer(player);
+            var error = this.props.handleAddActivity(activity);
 
             // update the state
             this.setState(function () {
@@ -298,8 +296,8 @@ var NewFreeAgentForm = function (_React$Component3) {
 
             if (!error) {
                 e.target.elements.yourName.value = '';
-                e.target.elements.yourGender.value = 'Male';
-                e.target.elements.yourMessage.value = '';
+                e.target.elements.yourActivity.value = 'Running';
+                e.target.elements.yourDistance.value = '';
             }
         }
     }, {
@@ -311,7 +309,7 @@ var NewFreeAgentForm = function (_React$Component3) {
                 React.createElement(
                     'h2',
                     null,
-                    'Add a New Free Agent'
+                    'Add a New Activity'
                 ),
                 this.state.error && React.createElement(
                     'p',
@@ -332,20 +330,30 @@ var NewFreeAgentForm = function (_React$Component3) {
                     React.createElement(
                         'label',
                         null,
-                        'Gender: '
+                        'Activity: '
                     ),
                     React.createElement(
                         'select',
-                        { name: 'yourGender' },
+                        { name: 'yourActivity' },
                         React.createElement(
                             'option',
-                            { value: 'Male' },
-                            'Male'
+                            { value: 'Running' },
+                            'Running'
                         ),
                         React.createElement(
                             'option',
-                            { value: 'Female' },
-                            'Female'
+                            { value: 'Walking' },
+                            'Walking'
+                        ),
+                        React.createElement(
+                            'option',
+                            { value: 'Cycling' },
+                            'Cycling'
+                        ),
+                        React.createElement(
+                            'option',
+                            { value: 'Swimming' },
+                            'Swimming'
                         )
                     ),
                     React.createElement('br', null),
@@ -353,23 +361,22 @@ var NewFreeAgentForm = function (_React$Component3) {
                     React.createElement(
                         'label',
                         null,
-                        'Your Message: '
+                        'Distance: '
                     ),
-                    React.createElement('br', null),
-                    React.createElement('textarea', { name: 'yourMessage', rows: '8', cols: '100' }),
+                    React.createElement('input', { type: 'text', name: 'yourDistance' }),
                     React.createElement('br', null),
                     React.createElement('br', null),
                     React.createElement(
                         'button',
                         null,
-                        'Submit Your Name'
+                        'Submit Activity'
                     )
                 )
             );
         }
     }]);
 
-    return NewFreeAgentForm;
+    return NewActivityForm;
 }(React.Component);
 
-ReactDOM.render(React.createElement(FreeAgentTracker, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(ActivityTracker, null), document.getElementById('app'));

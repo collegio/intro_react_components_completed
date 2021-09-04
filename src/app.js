@@ -1,76 +1,76 @@
-class FreeAgentTracker extends React.Component {
+class ActivityTracker extends React.Component {
     constructor(props) {
         super(props);
 
         // bind the required methods to this
-        this.handleAddPlayer = this.handleAddPlayer.bind(this);
-        this.handleDeletePlayers = this.handleDeletePlayers.bind(this);
-        this.handleDeletePlayer = this.handleDeletePlayer.bind(this);
+        this.handleAddActivity = this.handleAddActivity.bind(this);
+        this.handleDeleteActivities = this.handleDeleteActivities.bind(this);
+        this.handleDeleteActivity = this.handleDeleteActivity.bind(this);
 
-        // Set the initial state of the players here. Even though we're not directly
+        // Set the initial state of the activities here. Even though we're not directly
         // rendering it inside of this component, we will be performing almost all of
         // the functionality of it at this level.
         this.state = {
-            players: []
+            activities: []
         };
     }
 
-    // componentDidMount: we're going to use this to retrieve our players from local storage
+    // componentDidMount: we're going to use this to retrieve our activities from local storage
     componentDidMount() {
 
         try {
-            const playerJSON = localStorage.getItem('players');
-            const players = JSON.parse(playerJSON);
+            const activityJSON = localStorage.getItem('activities');
+            const activities = JSON.parse(activityJSON);
 
-            if (players) {
-                this.setState(() => ({ players }));
+            if (activities) {
+                this.setState(() => ({ activities }));
             }
         } catch (e) {
             // No action required.
         }
     }
 
-    // componentDidUpdate: we're going to use this to save our updated player state in local storage
+    // componentDidUpdate: we're going to use this to save our updated activity state in local storage
     componentDidUpdate(prevProps, prevState) {
 
-        if (prevState.players.length !== this.state.players.length) {
+        if (prevState.activities.length !== this.state.activities.length) {
 
-            const playerJSON = JSON.stringify(this.state.players);
-            localStorage.setItem('players', playerJSON);
+            const activityJSON = JSON.stringify(this.state.activities);
+            localStorage.setItem('activities', activityJSON);
         }
     }
 
-    // handleAddPlayer: Used to add a new player to the list of free agents
-    handleAddPlayer(player) {
+    // handleAddActivity: Used to add a new activity to the list of free agents
+    handleAddActivity(activity) {
 
-        if (!player.name) {
-            return 'Please enter a valid player name.';
+        if (!activity.name) {
+            return 'Please enter a valid activity name.';
         }
 
         // update the state
         this.setState((prevState) => {
             return {
-                players: prevState.players.concat(player)
+                activities: prevState.activities.concat(activity)
             };
         });
     }
 
-    // handleDeletePlayers: Used to clear all players from the list
-    handleDeletePlayers() {
+    // handleDeleteActivities: Used to clear all activities from the list
+    handleDeleteActivities() {
 
         // update the state
         this.setState((prevState) => {
             return {
-                players: []
+                activities: []
             };
         });
     }
 
-    // handleDeletePlayer: Used to remove a specific player from the list
-    handleDeletePlayer(player) {
+    // handleDeleteActivity: Used to remove a specific activity from the list
+    handleDeleteActivity(activity) {
 
-        const newPlayerList = this.state.players.filter((thePlayer) => {
-            if (thePlayer.name == player.name) {
+        const newActivityList = this.state.activities.filter((theActivity) => {
+            if (theActivity.name == activity.name) {
                 return false;
             }
             else {
@@ -81,7 +81,7 @@ class FreeAgentTracker extends React.Component {
         // update the state
         this.setState((prevState) => {
             return {
-                players: newPlayerList
+                activities: newActivityList
             };
         });
     }
@@ -90,12 +90,12 @@ class FreeAgentTracker extends React.Component {
     render() {
         return (
             <div>
-                <Header>Free Agent Tracker</Header>
+                <Header>Activity Tracker</Header>
                 <Body 
-                    handleAddPlayer={this.handleAddPlayer}
-                    handleDeletePlayers={this.handleDeletePlayers}
-                    handleDeletePlayer={this.handleDeletePlayer}
-                    players={this.state.players}
+                    handleAddActivity={this.handleAddActivity}
+                    handleDeleteActivities={this.handleDeleteActivities}
+                    handleDeleteActivity={this.handleDeleteActivity}
+                    activities={this.state.activities}
                 />
             </div>
         );
@@ -117,66 +117,63 @@ Header.defaultProps = {
 const Body = (props) => {
     return (
         <div>
-            <PlayersList
-                players={props.players}
-                handleDeletePlayers={props.handleDeletePlayers}
-                handleDeletePlayer={props.handleDeletePlayer}
+            <ActivitiesList
+                activities={props.activities}
+                handleDeleteActivities={props.handleDeleteActivities}
+                handleDeleteActivity={props.handleDeleteActivity}
             />
             
-            <NewFreeAgentForm handleAddPlayer={props.handleAddPlayer} />
+            <NewActivityForm handleAddActivity={props.handleAddActivity} />
         </div>
     );
 }
 
-const PlayersList = (props) => {
+const ActivitiesList = (props) => {
     return (
         <div>
-            {props.players.length <= 0 && <p>No free agents, everybody is playing!</p>}
-            {props.players.length > 0 && <button onClick={props.handleDeletePlayers}>Remove All Players</button>}
+            {props.activities.length <= 0 && <p>No activities entered</p>}
+            {props.activities.length > 0 && <button onClick={props.handleDeleteActivities}>Remove All Activities</button>}
             <ul>
                 {
-                props.players.map((player) => <Player key={player.name} player={player} handleDeletePlayer={props.handleDeletePlayer} />)
+                props.activities.map((activity) => <Activity key={activity.name} activity={activity} handleDeleteActivity={props.handleDeleteActivity} />)
                 }
             </ul>
         </div>
     );
 }
 
-class Player extends React.Component {
+class Activity extends React.Component {
     constructor(props) {
 
         // bind the required methods to this
         super(props);
-        this.deletePlayer = this.deletePlayer.bind(this);
+        this.deleteActivity = this.deleteActivity.bind(this);
     }
 
-    // deletePlayer: used to pass up the player to delete into the handleDeletePlayer() method
-    deletePlayer() {
+    // deleteActivity: used to pass up the activity to delete into the handleDeleteActivity() method
+    deleteActivity() {
 
-        // delete the player via the handler method
-        this.props.handleDeletePlayer(this.props.player);
+        // delete the activity via the handler method
+        this.props.handleDeleteActivity(this.props.activity);
     }
 
     render() {
         return (
             <li>
-                {this.props.player.name} ({this.props.player.gender}) 
+                {this.props.activity.name} - {this.props.activity.activity}
                 
-                <br />
                 <br />
                 
                 <p>
-                    <strong>About Me:</strong>
-                    <br />
-                    {this.props.player.message}
+                    <strong>Distance:</strong> {this.props.activity.distance}
                 </p>
-                <button onClick={this.deletePlayer}>Remove</button>
+                <button onClick={this.deleteActivity}>Remove</button>
             </li>
         );
     }
 }
 
-class NewFreeAgentForm extends React.Component {
+class NewActivityForm extends React.Component {
     constructor(props) {
         super(props);
         this.formDidSubmit = this.formDidSubmit.bind(this);
@@ -192,12 +189,12 @@ class NewFreeAgentForm extends React.Component {
     formDidSubmit(e) {
         e.preventDefault();
 
-        const player = {
+        const activity = {
             name: e.target.elements.yourName.value.trim(),
-            gender: e.target.elements.yourGender.value.trim(),
-            message: e.target.elements.yourMessage.value.trim()
+            activity: e.target.elements.yourActivity.value.trim(),
+            distance: e.target.elements.yourDistance.value.trim()
         };
-        const error = this.props.handleAddPlayer(player);
+        const error = this.props.handleAddActivity(activity);
 
         // update the state
         this.setState(() => {
@@ -206,38 +203,39 @@ class NewFreeAgentForm extends React.Component {
 
         if (!error) {
             e.target.elements.yourName.value = '';
-            e.target.elements.yourGender.value = 'Male';
-            e.target.elements.yourMessage.value = '';
+            e.target.elements.yourActivity.value = 'Running';
+            e.target.elements.yourDistance.value = '';
         }
     }
 
     render() {
         return (
             <div>
-                <h2>Add a New Free Agent</h2>
+                <h2>Add a New Activity</h2>
                 {this.state.error && <p>{this.state.error}</p>}
                 <form onSubmit={this.formDidSubmit}>
                     <label>Name: </label>
                     <input type="text" name="yourName" />
                     <br />
                     <br />
-                    <label>Gender: </label>
-                    <select name="yourGender">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <label>Activity: </label>
+                    <select name="yourActivity">
+                    <option value="Running">Running</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Swimming">Swimming</option>
                     </select>
                     <br />
                     <br />
-                    <label>Your Message: </label>
+                    <label>Distance: </label>
+                    <input type="text" name="yourDistance" />
                     <br />
-                    <textarea name="yourMessage" rows="8" cols="100"></textarea>
                     <br />
-                    <br />
-                    <button>Submit Your Name</button>
+                    <button>Submit Activity</button>
                 </form>
             </div>
         );
     }
 }
 
-ReactDOM.render(<FreeAgentTracker />, document.getElementById('app'));
+ReactDOM.render(<ActivityTracker />, document.getElementById('app'));
